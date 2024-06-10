@@ -66,7 +66,7 @@ def fetch_url_content():
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS, cookies=COOKIES)
 
-    return response.text
+    return re.sub(r'<h1[^>]*>.*?</h1>', '<h1>Ceci est un test</h1>', response)
 
 
 if __name__ == "__main__":
