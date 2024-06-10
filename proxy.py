@@ -6,8 +6,8 @@ from flask import Flask, jsonify, request
 import re
 import os
 
-EMAIL = print(os.environ['EMAIL'])
-PASSWORD = print(os.environ['PASSWORD'])
+EMAIL = os.environ['EMAIL']
+PASSWORD = os.environ['PASSWORD']
 
 XPATH_RE = "xpath\((.*)\)"
 
