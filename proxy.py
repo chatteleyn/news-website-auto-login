@@ -18,7 +18,7 @@ WEBSITES = {
         "login_url": "https://www.mediapart.fr/login_check",
         "login": {"email": EMAIL, "password": PASSWORD},
         "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
-        "strip": ["xpath(//aside)", "xpath(//meta[@property='og:url'])", "xpath(//link[@rel='canonical'])"],
+        "strip": ["xpath(//aside)", "xpath(//span[contains(@class, 'screen-reader-only')])"],
     },
     "www.monde-diplomatique.fr": {
         "login_url": "https://www.monde-diplomatique.fr/connexion/",
@@ -34,7 +34,7 @@ WEBSITES = {
             "_jeton": "xpath(//form//input[@name='_jeton']/@value)",
         },
         "not_logged_in": "xpath(//div[@id='paywall'])",
-        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])", "xpath(//meta[@property='og:url'])", "xpath(//link[@rel='canonical'])"],
+        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])"],
     },
 }
 
@@ -79,4 +79,4 @@ def fetch_url_content():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
