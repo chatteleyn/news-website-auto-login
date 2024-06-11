@@ -71,7 +71,6 @@ def fetch_url_content():
         tree = html.fromstring(content)
         for strip in WEBSITES[key]["strip"]:
             for element in tree.xpath(re.search(XPATH_RE, strip).group(1)):
-                print(element)
                 element.getparent().remove(element)
 
         content = html.tostring(tree, encoding=str)
