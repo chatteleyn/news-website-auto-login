@@ -70,13 +70,19 @@ def fetch_url_content():
         response = session.get(url, headers=HEADERS)
 
     content = response.content
+    tree = html.fromstring(content)
     if "strip" in WEBSITES[key]:
-        tree = html.fromstring(content)
         for strip in WEBSITES[key]["strip"]:
             for element in tree.xpath(re.search(XPATH_RE, strip).group(1)):
                 element.getparent().remove(element)
+    for img in tree.xpath("//img"):
+        src = img.get('src')
+        if src and not src.startswith(('http://', 'https://')):
+            absolute_src = urljoin(
+                urlparse(url).scheme + "://" + urlparse(url).netloc, src)
+            img.set('src', absolute_src)
 
-        content = html.tostring(tree, encoding=str)
+    content = html.tostring(tree, encoding=str)
 
     return content
 
