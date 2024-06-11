@@ -61,6 +61,7 @@ def fetch_url_content():
         login = LOGINS[key]["login"]
 
         for field in login.keys():
+            print(login[field], type(login[field]))
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
                     tree = etree.HTML(session.get(LOGINS[key]["login_url"], headers=HEADERS, cookies=COOKIES).content)
