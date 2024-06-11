@@ -1,11 +1,10 @@
-import base64
 import os
 import re
 from urllib.parse import urlparse
 
 import requests
 from flask import Flask, jsonify, request
-from lxml import etree
+from lxml import html
 
 EMAIL = os.environ['EMAIL']
 PASSWORD = os.environ['PASSWORD']
@@ -14,11 +13,12 @@ XPATH_RE = "xpath\((.*)\)"
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"}
 
-LOGINS = {
+WEBSITES = {
     "www.mediapart.fr": {
         "login_url": "https://www.mediapart.fr/login_check",
         "login": {"email": EMAIL, "password": PASSWORD},
         "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
+        "strip": ["xpath(//aside)"],
     },
     "www.monde-diplomatique.fr": {
         "login_url": "https://www.monde-diplomatique.fr/connexion/",
@@ -34,6 +34,7 @@ LOGINS = {
             "_jeton": "xpath(//form//input[@name='_jeton']/@value)",
         },
         "not_logged_in": "xpath(//div[@id='paywall'])",
+        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])"],
     },
 }
 
@@ -44,8 +45,7 @@ session = requests.Session()
 
 @app.route("/fetch", methods=["GET"])
 def fetch_url_content():
-    url_base64 = request.args.get("url")
-    url = base64.b64decode(url_base64.encode("ascii")).decode("ascii")
+    url = request.args.get("url")
     if not url:
         return jsonify({"error": "URL parameter is required"}), 400
 
@@ -53,22 +53,31 @@ def fetch_url_content():
 
     response = session.get(url, headers=HEADERS)
 
-    if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
+    if key in WEBSITES and html.fromstring(response.content).xpath(re.search(XPATH_RE, WEBSITES[key]["not_logged_in"]).group(1)):
         tree = None
-        login = dict(LOGINS[key]["login"])
+        login = dict(WEBSITES[key]["login"])
 
         for field in login.keys():
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
-                    tree = etree.HTML(session.get(LOGINS[key]["login_url"], headers=HEADERS).content)
+                    tree = html.fromstring(session.get(WEBSITES[key]["login_url"], headers=HEADERS).content)
                 login[field] = tree.xpath(re.search(XPATH_RE, login[field]).group(1))[0]
 
-        session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
+        session.post(WEBSITES[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS)
 
-    return response.text.replace(key, "proxy-bay-phi.vercel.app")
+    content = response.content
+    if "strip" in WEBSITES[key]:
+        tree = html.fromstring(content)
+        for strip in WEBSITES[key]["strip"]:
+            for element in tree.xpath(re.search(XPATH_RE, strip).group(1)):
+                print(element)
+                element.getparent().remove(element)
 
+        content = html.tostring(tree, encoding=str)
+
+    return content
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
