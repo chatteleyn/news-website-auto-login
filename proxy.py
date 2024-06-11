@@ -1,10 +1,11 @@
+import base64
+import os
+import re
 from urllib.parse import urlparse
 
 import requests
-from lxml import etree
 from flask import Flask, jsonify, request
-import re
-import os
+from lxml import etree
 
 EMAIL = os.environ['EMAIL']
 PASSWORD = os.environ['PASSWORD']
@@ -45,7 +46,9 @@ session = requests.Session()
 
 @app.route("/fetch", methods=["GET"])
 def fetch_url_content():
-    url = request.args.get("url")
+    url_base64 = request.args.get("url")
+    url = base64.b64decode(url_base64.encode("ascii")).decode("ascii")
+    print(url)
     if not url:
         return jsonify({"error": "URL parameter is required"}), 400
 
@@ -66,7 +69,7 @@ def fetch_url_content():
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS, cookies=COOKIES)
 
-    return response.content.replace("Chatteleyn", "Test")
+    return response.content
 
 
 if __name__ == "__main__":
