@@ -68,4 +68,8 @@ def fetch_url_content():
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS, cookies=COOKIES)
 
-    return response.text.replace("Chatteleyn", "Test")
+    return response.text
+
+
+if __name__ == "__main__":
+    app.run()
