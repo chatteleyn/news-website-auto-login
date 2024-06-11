@@ -18,7 +18,7 @@ WEBSITES = {
         "login_url": "https://www.mediapart.fr/login_check",
         "login": {"email": EMAIL, "password": PASSWORD},
         "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
-        "strip": ["xpath(//aside)"],
+        "strip": ["xpath(//aside)", "xpath(//head)"],
     },
     "www.monde-diplomatique.fr": {
         "login_url": "https://www.monde-diplomatique.fr/connexion/",
@@ -34,7 +34,7 @@ WEBSITES = {
             "_jeton": "xpath(//form//input[@name='_jeton']/@value)",
         },
         "not_logged_in": "xpath(//div[@id='paywall'])",
-        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])"],
+        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])", "xpath(//head)"],
     },
 }
 
