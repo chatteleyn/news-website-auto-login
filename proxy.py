@@ -7,8 +7,8 @@ import requests
 from flask import Flask, jsonify, request
 from lxml import etree
 
-EMAIL = "***REMOVED***"
-PASSWORD = "***REMOVED***"
+EMAIL = os.environ['EMAIL']
+PASSWORD = os.environ['PASSWORD']
 
 XPATH_RE = "xpath\((.*)\)"
 
@@ -56,7 +56,9 @@ def fetch_url_content():
     response = session.get(url, headers=HEADERS, cookies=COOKIES)
 
     # if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
+    print(key)
     if key in LOGINS:
+        print("yes")
         tree = None
         login = dict(LOGINS[key]["login"])
 
