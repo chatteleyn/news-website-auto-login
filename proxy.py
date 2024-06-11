@@ -55,7 +55,8 @@ def fetch_url_content():
 
     response = session.get(url, headers=HEADERS, cookies=COOKIES)
 
-    if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
+    # if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
+    if key in LOGINS:
         tree = None
         login = LOGINS[key]["login"]
 
