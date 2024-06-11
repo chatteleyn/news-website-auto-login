@@ -14,8 +14,6 @@ XPATH_RE = "xpath\((.*)\)"
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"}
 
-COOKIES = {"cc": "{%22disagreement%22:[]%2C%22creation%22:1718058094440%2C%22update%22:1718058096681}"}
-
 LOGINS = {
     "www.mediapart.fr": {
         "login_url": "https://www.mediapart.fr/login_check",
@@ -53,7 +51,7 @@ def fetch_url_content():
 
     key = urlparse(url).netloc
 
-    response = session.get(url, headers=HEADERS, cookies=COOKIES)
+    response = session.get(url, headers=HEADERS)
 
     # if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
     if key in LOGINS:
@@ -63,16 +61,16 @@ def fetch_url_content():
         for field in login.keys():
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
-                    tree = etree.HTML(session.get(LOGINS[key]["login_url"], headers=HEADERS, cookies=COOKIES).content)
+                    tree = etree.HTML(session.get(LOGINS[key]["login_url"], headers=HEADERS).content)
                 login[field] = tree.xpath(re.search(XPATH_RE, login[field]).group(1))[0]
 
-        print(login)
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
-        response = session.get(url, headers=HEADERS, cookies=COOKIES)
-    
-    print(response.text)
+        response = session.get(url, headers=HEADERS)
+    else:
+        print("non")
     return response.text
 
 
 if __name__ == "__main__":
     app.run()
+
