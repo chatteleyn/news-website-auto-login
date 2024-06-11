@@ -53,8 +53,7 @@ def fetch_url_content():
 
     response = session.get(url, headers=HEADERS)
 
-    # if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
-    if key in LOGINS:
+    if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
         tree = None
         login = dict(LOGINS[key]["login"])
 
@@ -66,11 +65,10 @@ def fetch_url_content():
 
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS)
-    else:
-        print("non")
-    return response.text
+
+    return response.text.replace(key, "proxy-bay-phi.vercel.app")
+
 
 
 if __name__ == "__main__":
     app.run()
-
