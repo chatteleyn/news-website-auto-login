@@ -58,14 +58,13 @@ def fetch_url_content():
     # if key in LOGINS and etree.HTML(response.content).xpath(re.search(XPATH_RE, LOGINS[key]["not_logged_in"]).group(1)):
     if key in LOGINS:
         tree = None
-        login = LOGINS[key]["login"]
+        login = dict(LOGINS[key]["login"])
 
         for field in login.keys():
-            print(login[field], type(login[field]))
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
                     tree = etree.HTML(session.get(LOGINS[key]["login_url"], headers=HEADERS, cookies=COOKIES).content)
-                login[field] = tree.xpath(re.search(XPATH_RE, login[field]).group(1))
+                login[field] = tree.xpath(re.search(XPATH_RE, login[field]).group(1))[0]
 
         session.post(LOGINS[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS, cookies=COOKIES)
