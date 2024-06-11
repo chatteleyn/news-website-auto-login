@@ -11,14 +11,15 @@ PASSWORD = os.environ['PASSWORD']
 
 XPATH_RE = "xpath\((.*)\)"
 
-HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0"}
 
 WEBSITES = {
     "www.mediapart.fr": {
         "login_url": "https://www.mediapart.fr/login_check",
         "login": {"email": EMAIL, "password": PASSWORD},
         "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
-        "strip": ["xpath(//aside)", "xpath(//span[contains(@class, 'screen-reader-only')])"],
+        "strip": ["xpath(//aside)", "xpath(//span[contains(@class, 'screen-reader-only')])", "xpath(//meta[@property='og:url'])", "xpath(//link[@rel='canonical'])"],
     },
     "www.monde-diplomatique.fr": {
         "login_url": "https://www.monde-diplomatique.fr/connexion/",
@@ -34,7 +35,7 @@ WEBSITES = {
             "_jeton": "xpath(//form//input[@name='_jeton']/@value)",
         },
         "not_logged_in": "xpath(//div[@id='paywall'])",
-        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])"],
+        "strip": ["xpath(/div[contains(@class, 'bandeautitre')])", "xpath(/div[contains(@class, 'bandeautitre')])", "xpath(//meta[@property='og:url'])", "xpath(//link[@rel='canonical'])"],
     },
 }
 
@@ -60,8 +61,10 @@ def fetch_url_content():
         for field in login.keys():
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
-                    tree = html.fromstring(session.get(WEBSITES[key]["login_url"], headers=HEADERS).content)
-                login[field] = tree.xpath(re.search(XPATH_RE, login[field]).group(1))[0]
+                    tree = html.fromstring(session.get(
+                        WEBSITES[key]["login_url"], headers=HEADERS).content)
+                login[field] = tree.xpath(
+                    re.search(XPATH_RE, login[field]).group(1))[0]
 
         session.post(WEBSITES[key]["login_url"], data=login, headers=HEADERS)
         response = session.get(url, headers=HEADERS)
