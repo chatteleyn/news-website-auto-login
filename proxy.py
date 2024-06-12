@@ -4,7 +4,7 @@ import re
 from urllib.parse import unquote, urljoin, urlparse
 
 import requests
-from flask import Flask
+from flask import Flask, request
 from lxml import html
 
 # Regex for an xpath
@@ -24,9 +24,13 @@ app = Flask(__name__)
 session = requests.Session()
 
 
-@app.route("/<path:url>", methods=["GET"])
-def fetch_url_content(url):
-    parsed_url = urlparse(unquote(url))
+@app.route("/", methods=["GET"])
+def fetch_url_content():
+    url_encoded = request.args.get("url")
+    if not url_encoded:
+      return r"You need to specify an url with ?url=URL-ENCODED", 400
+    url = unquote(url_encoded)
+    parsed_url = urlparse(url)
     key = parsed_url.netloc
 
     response = session.get(url, headers=HEADERS)
@@ -51,8 +55,9 @@ def fetch_url_content(url):
     response_tree = html.fromstring(content)
 
     # Strip content from the HTML
-    if "key" in CONFIG and "strip" in CONFIG[key]:
+    if key in CONFIG and "strip" in CONFIG[key]:
         for strip in CONFIG[key]["strip"]:
+            print(re.search(XPATH_RE, strip).group(1))
             for element in response_tree.xpath(re.search(XPATH_RE, strip).group(1)):
                 element.getparent().remove(element)
 

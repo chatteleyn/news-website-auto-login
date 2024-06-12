@@ -24,7 +24,7 @@ You can configure the websites you want with your own credentials and settings b
 pip install -r requirements.txt
 python proxy.py
 ```
-Use the proxy by accessing `<address>/<url-encoded>` on your browser where `<address>`is the address of the server and `<url-encoded>` is the encoded url of the webpage you want to retrieve.
+Use the proxy by accessing `<address>?url=<url-encoded>` on your browser where `<address>`is the address of the server and `<url-encoded>` is the encoded url of the webpage you want to retrieve.
 
 ## Deployment
 

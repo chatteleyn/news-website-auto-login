@@ -24,8 +24,8 @@
     },
     "not_logged_in": "xpath(//div[@id='paywall'])",
     "strip": [
-      "xpath(/div[contains(@class, 'bandeautitre')]`)",
-      "xpath(/div[contains(@class, 'bandeautitre')])",
+      "xpath(//div[contains(@class, 'bandeautitre')])",
+      "xpath(//div[contains(@class, 'dates_auteurs')])",
       "xpath(//meta[@property='og:url'])",
       "xpath(//link[@rel='canonical'])"
     ]
