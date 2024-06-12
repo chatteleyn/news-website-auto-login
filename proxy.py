@@ -24,9 +24,10 @@ app = Flask(__name__)
 session = requests.Session()
 
 
-@app.route("/<path:url>", methods=["GET"])
-def fetch_url_content(url):
-    parsed_url = urlparse(unquote(url))
+@app.route("/<path:encoded_url>", methods=["GET"])
+def fetch_url_content(encoded_url):
+    url = unquote(encoded_url)
+    parsed_url = urlparse(url)
     key = parsed_url.netloc
 
     response = session.get(url, headers=HEADERS)
