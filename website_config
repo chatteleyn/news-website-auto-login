@@ -1,0 +1,33 @@
+{
+  "www.mediapart.fr": {
+    "login_url": "https://www.mediapart.fr/login_check",
+    "login": { "email": "$EMAIL$", "password": "$PASSWORD$" },
+    "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
+    "strip": [
+      "xpath(//aside)",
+      "xpath(//meta[@property='og:url'])",
+      "xpath(//link[@rel='canonical'])"
+    ]
+  },
+  "www.monde-diplomatique.fr": {
+    "login_url": "https://www.monde-diplomatique.fr/connexion/",
+    "login": {
+      "email": "$EMAIL$",
+      "mot_de_passe": "$PASSWORD$",
+      "valider": "Se+connecter",
+      "session_remember": "oui",
+      "formulaire_action": "identification_lecteur_ws",
+      "retour": "https://www.monde-diplomatique.fr/",
+      "email_nobot": "",
+      "formulaire_action_args": "xpath(//form//input[@name='formulaire_action_args']/@value)",
+      "_jeton": "xpath(//form//input[@name='_jeton']/@value)"
+    },
+    "not_logged_in": "xpath(//div[@id='paywall'])",
+    "strip": [
+      "xpath(/div[contains(@class, 'bandeautitre')]`)",
+      "xpath(/div[contains(@class, 'bandeautitre')])",
+      "xpath(//meta[@property='og:url'])",
+      "xpath(//link[@rel='canonical'])"
+    ]
+  }
+}
