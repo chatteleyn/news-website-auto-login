@@ -5,6 +5,7 @@
     "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
     "strip": [
       "xpath(//aside)",
+      "xpath(//span[@data-nosnippet])",
       "xpath(//meta[@property='og:url'])",
       "xpath(//link[@rel='canonical'])"
     ]
