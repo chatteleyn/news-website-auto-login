@@ -7,9 +7,6 @@ import requests
 from flask import Flask, request
 from lxml import html
 
-os.environ["EMAIL"] = "lucas.chatteleyn@gmail.com"
-os.environ["PASSWORD"] = "4pqZ5bP8"
-
 # Regex for an xpath
 XPATH_RE = "^xpath\((.*)\)$"
 
@@ -35,14 +32,29 @@ def remove_html_elements(tree, elements=[]):
     return tree
 
 
-def replace_html_elements(tree, elements=[]):
-    for target, new in elements:
-        for to_replace in tree.xpath(target):
-            if "tag" in new:
-                to_replace.tag = new["tag"]
-            if "attributes" in new and len(new["attributes"].values()) > 0:
-                for attribute, value in new["attributes"].items():
-                    to_replace.set(attribute, value)
+def move_html_elements(tree, elements=[]):
+    for origin, target, pos in elements:
+        print(origin, target, pos)
+        origin_element = tree.xpath(origin)[0]
+        parent = origin_element.getparent()
+        if parent is not None:
+            parent.remove(origin_element)
+
+        target_element = tree.xpath(target)[0]
+        if pos == "inside-up":
+            target_element.insert(0, origin_element)
+        elif pos == "inside-bottom":
+            target_element.append(origin_element)
+        elif pos == "outside-up":
+            parent = target_element.getparent()
+            if parent is not None:
+                index = parent.index(target_element)
+                parent.insert(index, origin_element)
+        elif pos == "outside-bottom":
+            target_parent = target_element.getparent()
+            if target_parent is not None:
+                index = target_parent.index(target_element)
+                target_parent.insert(index + 1, origin_element)
 
     return tree
 
@@ -97,11 +109,11 @@ def fetch_url_content():
     if key in CONFIG and "strip" in CONFIG[key]:
         response_tree = remove_html_elements(response_tree, [re.search(XPATH_RE, element).group(1) for element in CONFIG[key]["strip"]])
 
-    # Replace content from the HTML
-    if key in CONFIG and "replace" in CONFIG[key]:
-        response_tree = replace_html_elements(
+    # Move content from the HTML
+    if key in CONFIG and "move" in CONFIG[key]:
+        response_tree = move_html_elements(
             response_tree,
-            [(re.search(XPATH_RE, element[0]).group(1), element[1]) for element in CONFIG[key]["replace"]],
+            [(re.search(XPATH_RE, element[0]).group(1), re.search(XPATH_RE, element[1]).group(1), element[2]) for element in CONFIG[key]["move"]],
         )
 
     # Replace relative image sources to absolute links
@@ -113,4 +125,4 @@ def fetch_url_content():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

@@ -6,13 +6,16 @@
     "strip": [
       "xpath(//aside)",
       "xpath(//span[@data-nosnippet])",
+      "xpath(//figure[contains(@class, 'media--rich-audiomeans')])",
+      "xpath(//h2[contains(@class, 'subheading-bullet-point')])",
       "xpath(//meta[@property='og:url'])",
       "xpath(//link[@rel='canonical'])"
     ],
-    "replace": [
+    "move": [
       [
         "xpath(//p[contains(@class, 'news__heading__top__intro')])",
-        { "tag": "h2", "attributes": {} }
+        "xpath(//div[contains(@class, 'news__body__center__article')])",
+        "inside-up"
       ]
     ]
   },
