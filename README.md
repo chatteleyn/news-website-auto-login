@@ -12,6 +12,7 @@ You can configure the websites you want with your own credentials and settings b
 - `login`: This is the parameters that will be injected in the POST request to log in
 - `not_logged_in`: This is the XPATH of the HTML element is the page that shows you are not logged-in
 - `strip`: XPATH of HTML elements to remove from the result
+- `replace`: [XPATH, replace_dict] of elements to replace from the result.
 - You can use environment variables by surrounding it with `$$`
 - You can use XPATH by surrounding it with `xpath()`
 

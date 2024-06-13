@@ -8,6 +8,12 @@
       "xpath(//span[@data-nosnippet])",
       "xpath(//meta[@property='og:url'])",
       "xpath(//link[@rel='canonical'])"
+    ],
+    "replace": [
+      [
+        "xpath(//p[contains(@class, 'news__heading__top__intro')])",
+        { "tag": "h2", "attributes": {} }
+      ]
     ]
   },
   "www.monde-diplomatique.fr": {
