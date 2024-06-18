@@ -60,17 +60,14 @@ def move_html_elements(tree, elements=[]):
 
 
 def replace_relative_links(tree, parsed_url):
-    for img in tree.xpath("//img"):
-        src = img.get("src")
-        if src and not src.startswith(("http://", "https://")):
-            absolute_src = urljoin(parsed_url.scheme + "://" + parsed_url.netloc, src)
-            img.set("src", absolute_src)
+    attributes = ["src", "href"]
 
-    for a in tree.xpath("//a"):
-        href = a.get("href")
-        if href and not href.startswith(("http://", "https://")):
-            absolute_href = urljoin(parsed_url.scheme + "://" + parsed_url.netloc, href)
-            a.set("href", absolute_href)
+    for attribute in attributes:
+        for element in tree.xpath(f"//*[@{attribute}]"):
+            value = element.get(attribute)
+            if value and not value.startswith(("http://", "https://")):
+                absolute = urljoin(parsed_url.scheme + "://" + parsed_url.netloc, value)
+                element.set(attribute, absolute)
 
     return tree
 
