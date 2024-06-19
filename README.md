@@ -1,41 +1,55 @@
-# News websites auto-login
+Sure, here is a more professional and structured version of your README:
 
-A proxy that returns then content of a website authenticated/logged-in with your own credentials.
+# News Websites Auto-Login
 
-This project was originally developed so that you could read articles with a paywall or that require a connection on a Kobo e-reader using Pocket. Feel free to use this project for anything else.
+A proxy server that returns the content of a website authenticated/logged-in with your own credentials.
+
+This project was originally developed to enable reading articles with a paywall or that require login credentials on a Kobo e-reader using Pocket. Feel free to adapt this project for other uses.
+
+## Table of Contents
+
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Configuration
 
-You can configure the websites you want with your own credentials and settings by modifying the `website_config.json` file. Two examples for the [mediapart.fr](https://www.mediapart.fr/) and [monde-diplomatique.fr](https://www.monde-diplomatique.fr/) websites are already in the file.
+To configure the websites with your own credentials and settings, modify the `website_config.json` file. Example configurations for [mediapart.fr](https://www.mediapart.fr/) and [monde-diplomatique.fr](https://www.monde-diplomatique.fr/) are provided.
 
-- `login_url`: This is the url present in the action attribute in the HTML login form 
-- `login`: This is the parameters that will be injected in the POST request to log in
-- `not_logged_in`: This is the XPATH of the HTML element is the page that shows you are not logged-in
-- `strip`: List of XPATH for HTML elements to remove from the result
-- `move`: List of HTML elements to move from the result. The format is `[origin XPATH, target XPATH, position]` where position is the position from the target and can can be `inside-up` , `inside-bottom`, `outside-up`  or `outside-bottom`
+### Configuration Parameters
 
-- You can use environment variables by surrounding it with `$…$`
-- You can use XPATH by surrounding it with `xpath(…)`
+- `login_url`: The URL present in the action attribute of the HTML login form.
+- `login`: The parameters to be injected in the POST request to log in.
+- `not_logged_in`: The XPath of the HTML element indicating the user is not logged in.
+- `strip`: A list of XPath expressions for HTML elements to remove from the result.
+- `move`: A list of HTML elements to move within the result. Format: `[origin XPath, target XPath, position]` where position can be `inside-up`, `inside-bottom`, `outside-up`, or `outside-bottom`.
 
+### Additional Configuration Options
 
-
+- Use environment variables by surrounding them with `$…$`.
+- Use XPath by surrounding it with `xpath(…)`.
 
 ## Usage
+
+Install the required dependencies and run the proxy server:
 
 ```bash
 pip install -r requirements.txt
 python proxy.py
 ```
-Use the proxy by accessing `<address>?url=<url-encoded>` on your browser where `<address>`is the address of the server and `<url-encoded>` is the encoded url of the webpage you want to retrieve.
+
+Access the proxy by navigating to `<address>?url=<url-encoded>` in your browser, where `<address>` is the server address and `<url-encoded>` is the encoded URL of the webpage you want to retrieve.
 
 ## Deployment
 
-You'll find `vercel.json`, a config file to deploy the proxy on Vercel. You can choose to deploy this project on another service or on your own.
+The project includes a `vercel.json` configuration file for deployment on Vercel. You may also choose to deploy this project on another service or on your own server.
 
 ## Contributing
 
-Feel free make a pull request or to open a ticket for any feature request, issue or question.
+We welcome contributions! Feel free to make a pull request or open an issue for feature requests, bug reports, or questions.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+This project is licensed under the [MIT License](https://choosealicense.com/licenses/mit/).

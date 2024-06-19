@@ -113,7 +113,7 @@ def fetch_url_content():
             [(re.search(XPATH_RE, element[0]).group(1), re.search(XPATH_RE, element[1]).group(1), element[2]) for element in CONFIG[key]["move"]],
         )
 
-    # Replace relative image sources to absolute links
+    # Replace relative links to absolute links
     response_tree = replace_relative_links(response_tree, parsed_url)
 
     content = html.tostring(response_tree, encoding="utf-8")
