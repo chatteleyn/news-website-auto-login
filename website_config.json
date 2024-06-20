@@ -7,9 +7,7 @@
       "xpath(//aside)",
       "xpath(//span[@data-nosnippet])",
       "xpath(//figure[contains(@class, 'media--rich-audiomeans')])",
-      "xpath(//h2[contains(@class, 'subheading-bullet-point')])",
-      "xpath(//meta[@property='og:url'])",
-      "xpath(//link[@rel='canonical'])"
+      "xpath(//h2[contains(@class, 'subheading-bullet-point')])"
     ],
     "move": [
       [
