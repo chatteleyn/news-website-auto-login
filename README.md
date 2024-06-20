@@ -1,5 +1,3 @@
-Sure, here is a more professional and structured version of your README:
-
 # News Websites Auto-Login
 
 A proxy server that returns the content of a website authenticated/logged-in with your own credentials.
