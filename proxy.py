@@ -73,8 +73,8 @@ def replace_relative_links(tree, parsed_url):
 
 
 def add_prefix(tree, prefix):
-    title = tree.xpath("//meta[@property='og:title']")[0]
-    title.set("content", prefix + " " + title.get("content"))
+    title = tree.xpath("//h1")[0]
+    title.text = prefix + " " + title.text
 
     return tree
 
