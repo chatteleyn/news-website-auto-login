@@ -109,16 +109,21 @@ def fetch_url_content():
     content = response.content
     response_tree = html.fromstring(content)
 
-    # Strip content from the HTML
-    if key in CONFIG and "strip" in CONFIG[key]:
-        response_tree = remove_html_elements(response_tree, [re.search(XPATH_RE, element).group(1) for element in CONFIG[key]["strip"]])
+    if key in CONFIG:
+        # Strip content from the HTML
+        if "strip" in CONFIG[key]:
+            response_tree = remove_html_elements(response_tree, [re.search(XPATH_RE, element).group(1) for element in CONFIG[key]["strip"]])
 
-    # Move content from the HTML
-    if key in CONFIG and "move" in CONFIG[key]:
-        response_tree = move_html_elements(
-            response_tree,
-            [(re.search(XPATH_RE, element[0]).group(1), re.search(XPATH_RE, element[1]).group(1), element[2]) for element in CONFIG[key]["move"]],
-        )
+        # Move content from the HTML
+        if "move" in CONFIG[key]:
+            response_tree = move_html_elements(
+                response_tree,
+                [(re.search(XPATH_RE, element[0]).group(1), re.search(XPATH_RE, element[1]).group(1), element[2]) for element in CONFIG[key]["move"]],
+            )
+
+        # Add the prefix to the title
+        if "prefix" in CONFIG[key]:
+            response_tree = add_prefix(response_tree, CONFIG[key]["prefix"])
 
     # Replace relative links to absolute links
     response_tree = replace_relative_links(response_tree, parsed_url)
