@@ -72,6 +72,13 @@ def replace_relative_links(tree, parsed_url):
     return tree
 
 
+def add_prefix(tree, prefix):
+    title = tree.xpath("//meta[@property='og:title']")[0]
+    title.set("content", title.get(prefix + " " + "content"))
+
+    return tree
+
+
 @app.route("/", methods=["GET"])
 def fetch_url_content():
     url_encoded = request.args.get("url")

@@ -3,6 +3,7 @@
     "login_url": "https://www.mediapart.fr/login_check",
     "login": { "email": "$EMAIL$", "password": "$PASSWORD$" },
     "not_logged_in": "xpath(//div[contains(@class, 'paywall-login')])",
+    "prefix": "[Mediapart]",
     "strip": [
       "xpath(//aside)",
       "xpath(//span[@data-nosnippet])",
@@ -33,6 +34,7 @@
       "_jeton": "xpath(//form//input[@name='_jeton']/@value)"
     },
     "not_logged_in": "xpath(//div[@id='paywall'])",
+    "prefix": "[Diplo]",
     "strip": [
       "xpath(//div[contains(@class, 'bandeautitre')])",
       "xpath(//div[contains(@class, 'dates_auteurs')])",
