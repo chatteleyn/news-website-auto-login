@@ -18,11 +18,12 @@ To configure the websites with your own credentials and settings, modify the `we
 
 ### Configuration Parameters
 
-- `login_url`: The URL present in the action attribute of the HTML login form.
-- `login`: The parameters to be injected in the POST request to log in.
-- `not_logged_in`: The XPath of the HTML element indicating the user is not logged in.
-- `strip`: A list of XPath expressions for HTML elements to remove from the result.
-- `move`: A list of HTML elements to move within the result. Format: `[origin XPath, target XPath, position]` where position can be `inside-up`, `inside-bottom`, `outside-up`, or `outside-bottom`.
+- `login_url`: The URL present in the action attribute of the HTML login form
+- `login`: The parameters to be injected in the POST request to log in
+- `not_logged_in`: The XPath of the HTML element indicating the user is not logged in
+- `prefix`: A prefix to add before the title of the page
+- `strip`: A list of XPath expressions for HTML elements to remove from the result
+- `move`: A list of HTML elements to move within the result. Format: `[origin XPath, target XPath, position]` where position can be `inside-up`, `inside-bottom`, `outside-up`, or `outside-bottom`
 
 ### Additional Configuration Options
 
