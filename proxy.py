@@ -96,7 +96,7 @@ def fetch_url_content():
         login = dict(CONFIG[key]["login"])
 
         for field in login.keys():
-            # Check if the field is an xpath and retrive the value from the HTML
+            # Check if the field is an xpath and retrieve the value from the HTML
             if re.search(XPATH_RE, login[field]):
                 if tree is None:
                     tree = html.fromstring(session.get(CONFIG[key]["login_url"], headers=HEADERS).content)
