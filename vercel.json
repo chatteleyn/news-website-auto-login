@@ -14,8 +14,13 @@
   ],
   "headers": [
     {
-      "key": "x-robots-tag",
-      "value": "noindex"
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "x-robots-tag",
+          "value": "noindex"
+        }
+      ]
     }
   ]
 }
